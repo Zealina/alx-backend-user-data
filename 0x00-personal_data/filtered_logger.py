@@ -6,11 +6,8 @@ import re
 from typing import List
 
 
-def filter_datum(fields: List, redaction: str, message: str,
-                 separator: str) -> str:
-    """Return the log messages obfuscate
-    """
+def filter_datum(fields: List, red: str, message: str, sep: str) -> str:
+    """Return the log messages obfuscate"""
     for field in fields:
-        substitute = f'{field}={redaction};'
-        message = re.sub(f'{field}=.+?;', substitute, message)
+        message = re.sub(f'{field}=.+?;', f'{field}={red};', message)
     return message
