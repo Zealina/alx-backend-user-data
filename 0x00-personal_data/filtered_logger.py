@@ -2,6 +2,8 @@
 """Filtered logging module"""
 
 import logging
+import mysql.connector
+import os
 import re
 from typing import List
 
@@ -47,3 +49,16 @@ def get_logger() -> logging.Logger:
     stream_handler.setFormatter(RedactingFormatter(list(PII_FIELDS)))
     logger.addHandler(stream_handler)
     return logger
+
+
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    """connect to a mysql database and return a connector object"""
+    db_name = os.getenv('PERSONAL_DATA_DB_NAME')
+    db_username = os.getenv('PERSONAL_DATA_DB_USERNAME', 'root')
+    db_pwd = os.getenv('PERSONAL_DATA_DB_PASSWORD', '')
+    db_host = os.getenv('PERSONAL_DATA_DB_HOST', 'localhost')
+    return mysql.connector.connect(
+            database=db_name,
+            user=db_username,
+            password=db_pwd,
+            host=db_host)
