@@ -9,5 +9,5 @@ from typing import List
 def filter_datum(fields: List, red: str, message: str, sep: str) -> str:
     """Return the log messages obfuscate"""
     for field in fields:
-        message = re.sub(f'{field}=.+?;', f'{field}={red};', message)
+        message = re.sub(f'{field}=.+?{sep}', f'{field}={red}{sep}', message)
     return message
