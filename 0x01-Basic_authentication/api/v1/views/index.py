@@ -7,11 +7,13 @@ from api.v1.views import app_views
 
 @app_views.route('/unauthorized', methods=['GET'], strict_slashes=False)
 def unauthorized() -> None:
+    """Test the unauthorized end point"""
     abort(401)
 
 
 @app_views.route('/forbidden', methods=['GET'], strict_slashes=False)
 def forbidden() -> None:
+    """Test the forbidden endpoint"""
     abort(403)
 
 
