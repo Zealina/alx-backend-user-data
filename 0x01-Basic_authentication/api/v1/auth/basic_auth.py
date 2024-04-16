@@ -34,7 +34,7 @@ class BasicAuth(Auth):
             header = base64_authorization_header
             header = base64.b64decode(header)
             header = header.decode('utf-8')
-        except base64.binascii.Error:
+        except Exception:
             return
         return header
 
@@ -47,9 +47,11 @@ class BasicAuth(Auth):
         if type(decoded_base64_authorization_header) is not str:
             return (None, None)
         temp = decoded_base64_authorization_header.split(':')
-        if len(temp) != 2:
+        if len(temp) < 2:
             return (None, None)
-        return (temp[0], temp[1])
+        username = temp[0]
+        temp = ':'.join(temp[1:])
+        return (username, temp)
 
     def user_object_from_credentials(
             self,
