@@ -46,6 +46,6 @@ class BasicAuth(Auth):
             return
         temp = decoded_base64_authorization_header
         temp = temp.split(':')
-        if len(temp) < 2:
+        if len(temp) != 2:
             return
         return (temp[0], temp[1])
