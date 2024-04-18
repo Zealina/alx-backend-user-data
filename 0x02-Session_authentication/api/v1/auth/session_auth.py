@@ -4,6 +4,7 @@
 from api.v1.auth.auth import Auth
 from uuid import uuid4
 from models.user import User
+import os
 
 
 class SessionAuth(Auth):
@@ -33,3 +34,17 @@ class SessionAuth(Auth):
         if not user_id:
             return
         return User.get(user_id)
+
+    def destroy_session(self, request=None):
+        """Remove a session from storage"""
+        if request is None:
+            return False
+        cookie_name = os.getenv('SESSION_NAME')
+        cookie = request.cookies.get(cookie_name)
+        if not cookie:
+            return False
+        user_id = self.user_id_for_session_id(cookie)
+        if not user_id:
+            return False
+        self.__class__.user_id_by_session_id.pop(cookie)
+        return True
