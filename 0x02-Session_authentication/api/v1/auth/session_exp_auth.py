@@ -11,7 +11,7 @@ class SessionExpAuth(SessionAuth):
     def __init__(self):
         """Overload the init method"""
         super().__init__()
-        time  = os.getenv('SESSION_DURATION')
+        time = os.getenv('SESSION_DURATION')
         try:
             self.session_duration = int(time)
         except Exception as e:
@@ -19,6 +19,8 @@ class SessionExpAuth(SessionAuth):
 
     def create_session(self, user_id=None):
         """ extend the super method"""
+        if not user_id:
+            return
         sess_id = super().create_session(user_id)
         if not sess_id:
             return None
@@ -35,7 +37,7 @@ class SessionExpAuth(SessionAuth):
         if not user_date:
             return
         if self.session_duration <= 0:
-            return user_id
+            return user_date['user_id']
         creation = user_date.get('created_at')
         if not creation:
             return None
