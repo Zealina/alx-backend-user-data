@@ -3,6 +3,7 @@
 
 from sqlalchemy.orm.exc import NoResultFound
 import bcrypt
+import uuid
 from db import DB
 from user import User
 
@@ -39,3 +40,7 @@ class Auth:
                 user.hashed_password)
         except NoResultFound as e:
             return False
+
+    def _generate_uuid() -> str:
+        """Return a string representation of a new uuid"""
+        return str(uuid.uuid4())
