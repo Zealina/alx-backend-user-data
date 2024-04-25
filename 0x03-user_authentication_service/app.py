@@ -2,6 +2,7 @@
 """Flask app"""
 
 from flask import Flask, jsonify, request, abort
+from flask import redirect, url_for
 from auth import Auth
 
 
@@ -42,6 +43,19 @@ def create_sessh():
     out = jsonify({"email": email, "message": "logged in"})
     out.set_cookie("session_id", session_id)
     return out
+
+
+@app.route("/sessions", methods=["DELETE"], strict_slashes=False)
+def logout():
+    """Destroy a session"""
+    session_id = request.cookies.get("session_id")
+    if not session_id:
+        abort(400)
+    user = AUTH.get_user_from_session_id(session_id)
+    if not user:
+        abort(403)
+    AUTH.destroy_session(user.id)
+    return redirect(url_for('index'))
 
 
 if __name__ == "__main__":
