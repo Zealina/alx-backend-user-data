@@ -68,11 +68,11 @@ class Auth:
         except NoResultFound as e:
             return
 
-    def destroy_session(self, session_id: str) -> None:
+    def destroy_session(self, user_id: int) -> None:
         """Destroy user session on logout"""
-        if not session_id:
+        if not user_id:
             return
-        user = self.get_user_from_session_id(session_id)
-        if not user:
+        try:
+            self._db.update_user(user.id, session_id=None)
+        except NoResultFound as e:
             return
-        self._db.update_user(user.id, session_id=None)
