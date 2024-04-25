@@ -73,7 +73,7 @@ def get_reset_password_token():
     """Reset password for user"""
     email = request.cookies.get("email")
     try:
-        token = AUTH.get_password_token(email)
+        token = AUTH.get_reset_password_token(email)
         return jsonify({"email": email, "reset_token": token})
     except ValueError as e:
         abort(403)
