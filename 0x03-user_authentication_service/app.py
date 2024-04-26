@@ -19,10 +19,8 @@ def index():
 @app.route("/users", methods=["POST"], strict_slashes=False)
 def register_user():
     """Create user if not exists"""
-    email = request.form["email"]
-    password = request.form["password"]
-    if not email or not password:
-        abort(400)
+    email = request.form.get("email")
+    password = request.form.get("password")
     try:
         AUTH.register_user(email, password)
         return jsonify({"email": email, "message": "user created"})
@@ -33,10 +31,8 @@ def register_user():
 @app.route("/sessions", methods=["POST"], strict_slashes=False)
 def create_sessh():
     """Create new session on login"""
-    email = request.form['email']
-    password = request.form['password']
-    if not email or not password:
-        abort(400)
+    email = request.form.get('email')
+    password = request.form.get('password')
     if not AUTH.valid_login(email, password):
         abort(401)
     session_id = AUTH.create_session(email)
